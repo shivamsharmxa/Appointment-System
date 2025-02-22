@@ -21,7 +21,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import CustomFormField, { FormFieldType } from "../CustomFormField";
 import SubmitButton from "../SubmitButton";
 import { Form } from "../ui/form";
-import { getPatient } from "@/lib/actions/patient.actions";
 
 export const AppointmentForm = ({
   userId,
@@ -38,9 +37,6 @@ export const AppointmentForm = ({
 }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-
-  console.log("userid and patientid",userId , ",,,,,", patientId)
-
 
   const AppointmentFormValidation = getAppointmentSchema(type);
 
@@ -75,10 +71,10 @@ export const AppointmentForm = ({
     }
 
     try {
-      if (type === "create" || type === "schedule" && patientId) {
+      if (type === "create" && patientId) {
         const appointment = {
           userId,
-          patient:  patientId,
+          patient: patientId,
           primaryPhysician: values.primaryPhysician,
           schedule: new Date(values.schedule),
           reason: values.reason!,

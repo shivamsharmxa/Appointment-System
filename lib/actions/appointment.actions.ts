@@ -135,15 +135,18 @@ export const updateAppointment = async ({
 
     if (!updatedAppointment) throw Error;
 
-    const smsMessage = `Greetings from CarePulse. ${type === "schedule" ? `Your appointment is confirmed for ${formatDateTime(appointment.schedule!, timeZone).dateTime} with Dr. ${appointment.primaryPhysician}` : `We regret to inform that your appointment for ${formatDateTime(appointment.schedule!, timeZone).dateTime} is cancelled. Reason:  ${appointment.cancellationReason}`}.`;
+    const smsMessage = `Greetings from Mesdo. ${type === "schedule" ? `Your appointment is confirmed for ${appointment.schedule ? formatDateTime(appointment.schedule, timeZone).dateTime : ''} with Dr. ${appointment.primaryPhysician}` : `We regret to inform that your appointment is cancelled. Reason:  ${appointment.cancellationReason}`}.`;
     await sendSMSNotification(userId, smsMessage);
+    console.log("SMS message:", smsMessage);
 
     revalidatePath("/admin");
     return parseStringify(updatedAppointment);
   } catch (error) {
     console.error("An error occurred while scheduling an appointment:", error);
   }
-};
+}
+
+
 
 // GET APPOINTMENT
 export const getAppointment = async (appointmentId: string) => {
@@ -162,3 +165,6 @@ export const getAppointment = async (appointmentId: string) => {
     );
   }
 };
+
+
+
